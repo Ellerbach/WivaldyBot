@@ -3,3 +3,9 @@
 ################################################################################
 
 /packages
+/WivaldyBot/bin
+/WivaldyBot/obj/Debug
+/.vs/WivaldyBot/v14/.suo
+/WivaldyBot/botSettings.config
+/WivaldyBot/obj/Release
+/WivaldyBot/Properties/PublishProfiles

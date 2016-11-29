@@ -41,8 +41,8 @@ namespace WivaldyBot.Models
                 else
                 {
                     //TEMP FIX TO REMOVE WHILE NO DATA
-                    start = start.AddDays(-8);
-                    stop = stop.AddDays(-8);
+                    //start = start.AddDays(-8);
+                    //stop = stop.AddDays(-8);
                     // END REMOVE
                     if (DateTimeOffset.Compare(start, stop) > 1)
                     { stop = start.AddDays(1); }
