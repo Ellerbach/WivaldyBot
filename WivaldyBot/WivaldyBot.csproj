@@ -114,6 +114,10 @@
     <Content Include="botSettings.config" />
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
+    <Content Include="Images\wivaldy-all-300x300px.png" />
+    <Content Include="Images\wivaldy-W-300x300.png" />
+    <Content Include="Images\wivaldy_icon_home-overload.png" />
+    <Content Include="Images\wivaldy_icon_home-sleepy.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -128,10 +132,15 @@
     <Compile Include="Helpers\CardHero.cs" />
     <Compile Include="Models\Wivaldy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\WivaldyBotResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WivaldyBotResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Properties\PublishProfiles\WivaldyBot20161129032155 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Wivaldy - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -139,6 +148,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\WivaldyBotResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WivaldyBotResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -9,6 +9,8 @@ using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 using Microsoft.Bot.Builder.Dialogs;
 using WivaldyBot.Dialogs;
+using WivaldyBot.Properties;
+using Microsoft.Rest;
 
 namespace WivaldyBot
 {
@@ -21,24 +23,39 @@ namespace WivaldyBot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            try
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                //// calculate something for us to return
-                //int length = (activity.Text ?? string.Empty).Length;
-                //// return our reply to the user
-                //Activity reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
-                //await connector.Conversations.ReplyToActivityAsync(reply);
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    //// calculate something for us to return
+                    //int length = (activity.Text ?? string.Empty).Length;
+                    //// return our reply to the user
+                    //Activity reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
+                    //await connector.Conversations.ReplyToActivityAsync(reply);
 
-                await Conversation.SendAsync(activity, () => new WivaldyDialog());
+                    await Conversation.SendAsync(activity, () => new WivaldyDialog());
+                }
+                else
+                {
+                    await HandleSystemMessage(activity);
+                }
+                
+
             }
-            else
+            catch (Exception ex)
             {
-                await HandleSystemMessage(activity);
+                var reply = activity.CreateReply($"error. {ex.Message}");
+
+                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+
+                await connector.Conversations.ReplyToActivityAsync(reply);
+
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
+
 
         private async Task<Activity> HandleSystemMessage(Activity message)
         {
@@ -52,7 +69,7 @@ namespace WivaldyBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
-                var reply = message.CreateReply("Welcome to Wivaldy bot, just write anything and I'll help you :-)");
+                var reply = message.CreateReply(WivaldyBotResources.DialogWelcomeMessage);
 
                 ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
 

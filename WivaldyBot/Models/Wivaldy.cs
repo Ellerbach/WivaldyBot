@@ -80,24 +80,36 @@ namespace WivaldyBot.Models
             return await GetMeasures(start, DateTimeOffset.MinValue);
         }
 
+        public static double GetWattHour(Electricity res)
+        {
+            if (res.Consumptions.Length > 1)
+            {
+                long epochmin = res.Consumptions[0].epoch;
+                long epochmax = epochmin;
+                double wattshour = 0;
+                foreach (var elec in res.Consumptions)
+                {
+                    wattshour += elec.watts * (elec.epoch - epochmin);
+                    epochmin = elec.epoch;
+                }
+                wattshour = wattshour / 3600;
+                return wattshour;
+            }
+            else
+            {
+                if (res.Consumptions[0] != null)
+                    return res.Consumptions[0].watts;
+                else
+                    return 0;
+            }
+        }
+
         public class Electricity
         {
             public Consumption[] Consumptions { get; set; }
         }
 
         public class Consumption
-        {
-            public int epoch { get; set; }
-            public int watts { get; set; }
-        }
-
-
-        public class Rootobject
-        {
-            public Class1[] Property1 { get; set; }
-        }
-
-        public class Class1
         {
             public int epoch { get; set; }
             public int watts { get; set; }
