@@ -115,7 +115,7 @@ namespace WivaldyBot.Dialogs
                 "Select your activity",
                 "Tell us what you want to do",
                 options,
-                new[] { $"{URL}/Images/wivaldy-all-300x300px.png" });
+                new[] { $"{URL}/Images/wivaldy-all-200x200px.png" });
 
             await context.PostAsync(reply);
 
@@ -137,7 +137,7 @@ namespace WivaldyBot.Dialogs
                 "Electric consumption",
                 "Please select the cunsomption you want to see",
                 options,
-                new[] { $"{URL}/Images/wivaldy-W-300x300.png" });
+                new[] { $"{URL}/Images/wivaldy-W-é00x200.png" });
 
             await context.PostAsync(reply);
 
@@ -158,7 +158,7 @@ namespace WivaldyBot.Dialogs
                 "Electric consumption",
                 "Please select the cunsomption you want to see",
                 options,
-                new[] { $"{URL}/Images/wivaldy-W-300x300.png" });
+                new[] { $"{URL}/Images/wivaldy-W-200x200.png" });
 
             await context.PostAsync(reply);
 
@@ -260,9 +260,9 @@ namespace WivaldyBot.Dialogs
                 strresp += $"{wattshourA.ToString("N0", CultureInfo.CurrentUICulture)} kWh vs {wattshourB.ToString("N0", CultureInfo.CurrentUICulture)} kWh.\r\n\r\n";
                 // need to add correct markdown image
                 if (wattshourA > wattshourB)
-                    strresp += $"![Good]({URL}/Images/wivaldy_icon_home-overload.png)";
+                    strresp += $"![Good]({URL}/Images/wivaldy_icon_home-overload-200x200.png)";
                 else
-                    strresp += $"![Bad]({URL}/Images/wivaldy_icon_home-sleepy.png)";
+                    strresp += $"![Bad]({URL}/Images/wivaldy_icon_home-sleepy-200x200.png)";
             }
             else
             {
