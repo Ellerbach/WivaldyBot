@@ -26,12 +26,12 @@ namespace WivaldyBot.Models
 
         public async Task<Electricity> GetMeasures(DateTimeOffset start, DateTimeOffset stop)
         {
-            //API is http://app.wivaldy.com/api/v1/json/privatekey/2016-11-01-08:00/2016-11-01-08:10
-            //API is http://app.wivaldy.com/api/v1/json/ {PRIVATE_KEY} /last
+            //API is https://app.wivaldy.com/api/v1/json/privatekey/2016-11-01-08:00/2016-11-01-08:10
+            //API is https://app.wivaldy.com/api/v1/json/ {PRIVATE_KEY} /last
             try
             {
                 HttpClient cli = new HttpClient();
-                string urlrequest = $"http://app.wivaldy.com/api/v1/json/{Connection}/";
+                string urlrequest = $"https://app.wivaldy.com/api/v1/json/{Connection}/";
                 //if both are null, then only last measure
                 if ((start == DateTimeOffset.MinValue) && (stop == DateTimeOffset.MinValue))
                     urlrequest += "last";
