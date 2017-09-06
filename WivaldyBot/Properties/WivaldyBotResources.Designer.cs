@@ -61,6 +61,195 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Which consumption alert do you want?.
+        /// </summary>
+        internal static string AlertAskInstant {
+            get {
+                return ResourceManager.GetString("AlertAskInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change your existing alert?.
+        /// </summary>
+        internal static string AlertChange {
+            get {
+                return ResourceManager.GetString("AlertChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every {0} seconds with {1} watts threshold..
+        /// </summary>
+        internal static string AlertChangeInstant {
+            get {
+                return ResourceManager.GetString("AlertChangeInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every {0} seconds with {1} kWh threshold..
+        /// </summary>
+        internal static string AlertChangeTotal {
+            get {
+                return ResourceManager.GetString("AlertChangeTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instant.
+        /// </summary>
+        internal static string AlertInstant {
+            get {
+                return ResourceManager.GetString("AlertInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pelase enter the inteval in seconds.
+        /// </summary>
+        internal static string AlertInterval {
+            get {
+                return ResourceManager.GetString("AlertInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have setup a new alert: .
+        /// </summary>
+        internal static string AlertOK {
+            get {
+                return ResourceManager.GetString("AlertOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I&apos;m really sorry, I didn&apos;t understand, please try again later..
+        /// </summary>
+        internal static string AlertReallySorry {
+            get {
+                return ResourceManager.GetString("AlertReallySorry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I&apos;m sorry I did not undersant, plrease try again to enter a number of seconds.
+        /// </summary>
+        internal static string AlertRetryInterval {
+            get {
+                return ResourceManager.GetString("AlertRetryInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I&apos;m sorry I did not undersant, plrease try again to enter a number for the threshold.Make sure you are using {0} as a decimal separator..
+        /// </summary>
+        internal static string AlertRetryThreshold {
+            get {
+                return ResourceManager.GetString("AlertRetryThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your threshold in kWh.
+        /// </summary>
+        internal static string AlertThresholdkWh {
+            get {
+                return ResourceManager.GetString("AlertThresholdkWh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter your threshold in watts.
+        /// </summary>
+        internal static string AlertThresholdWatts {
+            get {
+                return ResourceManager.GetString("AlertThresholdWatts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        internal static string AlertTotal {
+            get {
+                return ResourceManager.GetString("AlertTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ![Bad]({0}/Images/wivaldy_icon_home-sleepy-200x200.png).
+        /// </summary>
+        internal static string CompareConsumptionBad {
+            get {
+                return ResourceManager.GetString("CompareConsumptionBad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ![Good]({0}/Images/wivaldy_icon_home-overload-200x200.png).
+        /// </summary>
+        internal static string CompareConsumptionGood {
+            get {
+                return ResourceManager.GetString("CompareConsumptionGood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} kWh vs {1} kWh.\r\n\r\n.
+        /// </summary>
+        internal static string CompareConsumptionkWh {
+            get {
+                return ResourceManager.GetString("CompareConsumptionkWh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption compare today last hour and yesterday same time is: .
+        /// </summary>
+        internal static string CompareConsumptionLastHourYesterday {
+            get {
+                return ResourceManager.GetString("CompareConsumptionLastHourYesterday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption compare from yesterday and today at the same time is: .
+        /// </summary>
+        internal static string CompareConsumptionTodayYesterday {
+            get {
+                return ResourceManager.GetString("CompareConsumptionTodayYesterday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption compare from yesterday and the day before is: .
+        /// </summary>
+        internal static string CompareConsumptionYesterdayDayBefore {
+            get {
+                return ResourceManager.GetString("CompareConsumptionYesterdayDayBefore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select your activity.
+        /// </summary>
+        internal static string DialogActivitySelect {
+            get {
+                return ResourceManager.GetString("DialogActivitySelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tell us what you want to do.
+        /// </summary>
+        internal static string DialogActivityTellUs {
+            get {
+                return ResourceManager.GetString("DialogActivityTellUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last hour with yesterday same time.
         /// </summary>
         internal static string DialogCompareLastHourYesterdaySameTime {
@@ -133,6 +322,24 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Electric consumption.
+        /// </summary>
+        internal static string DialogElectricityConsumption {
+            get {
+                return ResourceManager.GetString("DialogElectricityConsumption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select the cunsomption you want to see.
+        /// </summary>
+        internal static string DialogElectricityTellUs {
+            get {
+                return ResourceManager.GetString("DialogElectricityTellUs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ups, something went wrong..
         /// </summary>
         internal static string DialogErrorMessage {
@@ -151,11 +358,38 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your key is {0}.
+        /// </summary>
+        internal static string DialogKeyIs {
+            get {
+                return ResourceManager.GetString("DialogKeyIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your key has been removed.
         /// </summary>
         internal static string DialogKeyRemoved {
             get {
                 return ResourceManager.GetString("DialogKeyRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string DialogNo {
+            get {
+                return ResourceManager.GetString("DialogNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to alert.
+        /// </summary>
+        internal static string DialogWelcomeAlert {
+            get {
+                return ResourceManager.GetString("DialogWelcomeAlert", resourceCulture);
             }
         }
         
@@ -196,11 +430,83 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to Wivaldy bot, just write anything and I&apos;ll help you :-)\r\Type &apos;key&apos; to get your current key, &apos;logout&apos; to clear your key..
+        ///   Looks up a localized string similar to Welcome to Wivaldy bot, just write anything and I&apos;ll help you :-) Type &apos;key&apos; to get your current key, &apos;logout&apos; to clear your key..
         /// </summary>
         internal static string DialogWelcomeMessage {
             get {
                 return ResourceManager.GetString("DialogWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string DialogYes {
+            get {
+                return ResourceManager.GetString("DialogYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} watts..
+        /// </summary>
+        internal static string TotalConsumptionInstant {
+            get {
+                return ResourceManager.GetString("TotalConsumptionInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} kWh. . Cost is approximately {1} €..
+        /// </summary>
+        internal static string TotalConsumptionKwh {
+            get {
+                return ResourceManager.GetString("TotalConsumptionKwh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption for last hour is: .
+        /// </summary>
+        internal static string TotalConsumptionLastHour {
+            get {
+                return ResourceManager.GetString("TotalConsumptionLastHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, there is no data available..
+        /// </summary>
+        internal static string TotalConsumptionNoData {
+            get {
+                return ResourceManager.GetString("TotalConsumptionNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your instant consumption is: .
+        /// </summary>
+        internal static string TotalConsumptionNow {
+            get {
+                return ResourceManager.GetString("TotalConsumptionNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption for today is: .
+        /// </summary>
+        internal static string TotalConsumptionTodayIs {
+            get {
+                return ResourceManager.GetString("TotalConsumptionTodayIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your total consumption for yesterday is: .
+        /// </summary>
+        internal static string TotalConsumptionYesterday {
+            get {
+                return ResourceManager.GetString("TotalConsumptionYesterday", resourceCulture);
             }
         }
         

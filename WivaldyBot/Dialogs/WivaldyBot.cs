@@ -15,13 +15,15 @@ namespace WivaldyBot.Dialogs
     public class WivaldyDialog : IDialog<object>
     {
         private Wivaldy myWivaldy = new Wivaldy();
+        private Alert alert = new Alert();
         //TODO: change to get right URL
         private const string URL = "https://wivaldy.azurewebsites.net";
 
         private ResumptionCookie resumptionCookie;
         public async Task StartAsync(IDialogContext context)
         {
-            context.Wait(this.MessageReceivedAsync);
+            await WelcomeMessageAsync(context);
+            //context.Wait(this.MessageReceivedAsync);
         }
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -45,7 +47,7 @@ namespace WivaldyBot.Dialogs
                     }
                     catch (Exception err)
                     {
-                        reply.Text = WivaldyBotResources.DialogErrorMessage + $"{err.Message}";
+                        reply.Text = WivaldyBotResources.DialogErrorMessage + $" {err.Message}";
                     }
                     await context.PostAsync(reply);
                 }
@@ -56,7 +58,7 @@ namespace WivaldyBot.Dialogs
                     {
                         string key;
                         context.PrivateConversationData.TryGetValue(WivaldyBotResources.WivaldiConnectionString, out key);
-                        reply.Text = $"Your key is {key}";
+                        reply.Text = String.Format(WivaldyBotResources.DialogKeyIs, key);
                     }
                     catch (Exception err)
                     {
@@ -87,15 +89,21 @@ namespace WivaldyBot.Dialogs
                     await this.CompareMessageAsync(context);
                     return;
                 }
+                else if (message.Text == WivaldyBotResources.DialogWelcomeAlert)
+                {
+                    context.Call(new DialogAlert(this.alert), this.DialogAletrResumeAfter);
+                    return;
+                }
                 await this.WelcomeMessageAsync(context);
             }
             catch (Exception ex)
             {
                 var reply = context.MakeMessage();
 
-                reply.Text = $"Ups, big error, {ex.Message}";
+                reply.Text = $"{WivaldyBotResources.DialogErrorMessage}: {ex.Message}";
 
                 await context.PostAsync(reply);
+                await this.WelcomeMessageAsync(context);
             }
 
         }
@@ -108,12 +116,13 @@ namespace WivaldyBot.Dialogs
             {
                 WivaldyBotResources.DialogWelcomeElectricity,
                 WivaldyBotResources.DialogWelcomeCompare,
+                WivaldyBotResources.DialogWelcomeAlert,
                 WivaldyBotResources.DialogWelcomeKey,
                 WivaldyBotResources.DialogWelcomeLogout
             };
             reply.AddHeroCard(
-                "Select your activity",
-                "Tell us what you want to do",
+                WivaldyBotResources.DialogActivitySelect,
+                WivaldyBotResources.DialogActivityTellUs,
                 options,
                 new[] { $"{URL}/Images/wivaldy-all-200x200px.png" });
 
@@ -134,10 +143,10 @@ namespace WivaldyBot.Dialogs
                 WivaldyBotResources.DialogConsumptionLastDay
             };
             reply.AddHeroCard(
-                "Electric consumption",
-                "Please select the cunsomption you want to see",
+                WivaldyBotResources.DialogElectricityConsumption,
+                WivaldyBotResources.DialogElectricityTellUs,
                 options,
-                new[] { $"{URL}/Images/wivaldy-W-é00x200.png" });
+                new[] { $"{URL}/Images/wivaldy-W-200x200.png" });
 
             await context.PostAsync(reply);
 
@@ -155,8 +164,8 @@ namespace WivaldyBot.Dialogs
                 WivaldyBotResources.DialogCompareLastHourYesterdaySameTime,
             };
             reply.AddHeroCard(
-                "Electric consumption",
-                "Please select the cunsomption you want to see",
+                WivaldyBotResources.DialogElectricityConsumption,
+                WivaldyBotResources.DialogElectricityTellUs,
                 options,
                 new[] { $"{URL}/Images/wivaldy-W-200x200.png" });
 
@@ -169,31 +178,31 @@ namespace WivaldyBot.Dialogs
         {
             var message = await result;
             var reply = context.MakeMessage();
-            string strresp = "Your total consumption for ";
+            string strresp = "";
             Electricity res = null;
 
             if (message.Text == WivaldyBotResources.DialogConsumptionInstant)
             {
                 res = await myWivaldy.GetLastMeasures();
-                strresp += "now is ";
+                strresp = WivaldyBotResources.TotalConsumptionNow;
             }
             else if (message.Text == WivaldyBotResources.DialogConsumptionHour)
             {
                 res = await myWivaldy.GetMeasures(DateTimeOffset.Now.AddHours(-1), DateTimeOffset.Now);
-                strresp += "the last hour is ";
+                strresp = WivaldyBotResources.TotalConsumptionLastHour;
             }
             else if (message.Text == WivaldyBotResources.DialogConsumptionDay)
             {
                 DateTimeOffset today = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
                 res = await myWivaldy.GetMeasures(today, today.AddDays(1));
-                strresp += "today is ";
+                strresp = WivaldyBotResources.TotalConsumptionTodayIs;
             }
             else if (message.Text == WivaldyBotResources.DialogConsumptionLastDay)
             {
                 DateTimeOffset yesterday = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
                 yesterday = yesterday.AddDays(-1);
                 res = await myWivaldy.GetMeasures(yesterday, yesterday.AddDays(1));
-                strresp += "yesterday is ";
+                strresp = WivaldyBotResources.TotalConsumptionYesterday;
             }
 
             if (res != null)
@@ -203,20 +212,20 @@ namespace WivaldyBot.Dialogs
                     double wattshour = GetWattHour(res) / 1000;
                     //only for the prototype, cost is .13€ per KWh in France
                     double cost = wattshour * 0.13;
-                    strresp += $"{wattshour.ToString("N0", CultureInfo.CurrentUICulture)} kWh. Cost is approximately {cost.ToString("N2", CultureInfo.CurrentUICulture)} €.";
+                    strresp += String.Format(WivaldyBotResources.TotalConsumptionKwh, wattshour.ToString("N1", CultureInfo.CurrentUICulture), cost.ToString("N2", CultureInfo.CurrentUICulture));
                 }
                 else if (res.Consumptions.Length == 0)
                 {
-                    strresp += "Sorry but there are not data.";
+                    strresp = WivaldyBotResources.TotalConsumptionNoData;
                 }
                 else
                 {
-                    strresp += $"{res.Consumptions[0].watts.ToString("N0", CultureInfo.CurrentUICulture)} watts instant consumption.";
+                    strresp += String.Format(WivaldyBotResources.TotalConsumptionInstant, res.Consumptions[0].watts.ToString("N1", CultureInfo.CurrentUICulture));
                 }
             }
             else
             {
-                strresp = WivaldyBotResources.DialogErrorMessage + "Can't get the consumption.";
+                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData; 
             }
 
             reply.Text = strresp;
@@ -230,26 +239,26 @@ namespace WivaldyBot.Dialogs
         {
             var message = await result;
             var reply = context.MakeMessage();
-            string strresp = "Your total consumption compare from ";
+            string strresp = "";
             Electricity resA = null, resB = null;
             DateTimeOffset today = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
             if (message.Text == WivaldyBotResources.DialogCompareTodayYesterday)
             {
                 resA = await myWivaldy.GetMeasures(today, DateTimeOffset.Now);
                 resB = await myWivaldy.GetMeasures(today.AddDays(-1), DateTimeOffset.Now.AddDays(-1));
-                strresp += "yesterday and today at same time is ";
+                strresp = WivaldyBotResources.CompareConsumptionTodayYesterday;
             }
             else if (message.Text == WivaldyBotResources.DialogCompareYesterdayDayBefore)
             {
                 resA = await myWivaldy.GetDayMeasures(today.AddDays(-1));
                 resB = await myWivaldy.GetDayMeasures(today.AddDays(-2));
-                strresp += "yesterday and day before is ";
+                strresp = WivaldyBotResources.CompareConsumptionYesterdayDayBefore;
             }
             else if (message.Text == WivaldyBotResources.DialogCompareLastHourYesterdaySameTime)
             {
                 resA = await myWivaldy.GetMeasures(DateTimeOffset.Now.AddHours(-1), DateTimeOffset.Now);
                 resB = await myWivaldy.GetMeasures(DateTimeOffset.Now.AddDays(-1).AddHours(-1), DateTimeOffset.Now.AddDays(-1));
-                strresp += "today last hour and yesterday same time is ";
+                strresp += WivaldyBotResources.CompareConsumptionLastHourYesterday;
             }
 
             if ((resA != null) && (resB != null))
@@ -257,16 +266,17 @@ namespace WivaldyBot.Dialogs
 
                 double wattshourA = GetWattHour(resA) / 1000;
                 double wattshourB = GetWattHour(resB) / 1000;
-                strresp += $"{wattshourA.ToString("N0", CultureInfo.CurrentUICulture)} kWh vs {wattshourB.ToString("N0", CultureInfo.CurrentUICulture)} kWh.\r\n\r\n";
+                strresp += String.Format(WivaldyBotResources.CompareConsumptionkWh,wattshourA.ToString("N1", CultureInfo.CurrentUICulture), wattshourB.ToString("N1", CultureInfo.CurrentUICulture));
+                strresp += "\n\n";
                 // need to add correct markdown image
                 if (wattshourA > wattshourB)
-                    strresp += $"![Good]({URL}/Images/wivaldy_icon_home-overload-200x200.png)";
+                    strresp += String.Format(WivaldyBotResources.CompareConsumptionGood, URL);
                 else
-                    strresp += $"![Bad]({URL}/Images/wivaldy_icon_home-sleepy-200x200.png)";
+                    strresp += String.Format(WivaldyBotResources.CompareConsumptionBad, URL);
             }
             else
             {
-                strresp = WivaldyBotResources.DialogErrorMessage + "Can't get the consumption.";
+                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData; 
             }
 
             reply.Text = strresp;
@@ -292,6 +302,22 @@ namespace WivaldyBot.Dialogs
             }
 
             context.Wait(this.MessageReceivedAsync);
+        }
+
+        private async Task DialogAletrResumeAfter(IDialogContext context, IAwaitable<Alert> result)
+        {
+            this.alert = await result;
+            var reply = context.MakeMessage();
+            reply.Text = string.Format(WivaldyBotResources.AlertOK);
+            if (alert.IsInstant)
+                reply.Text += string.Format(WivaldyBotResources.AlertChangeInstant, alert.Interval, alert.Threshold);
+            else
+                reply.Text += string.Format(WivaldyBotResources.AlertChangeTotal, alert.Interval, alert.Threshold);
+            await context.PostAsync(reply);
+            reply.Text = "Alert not yet implemented";
+            await context.PostAsync(reply);
+
+            await WelcomeMessageAsync(context);
         }
 
     }

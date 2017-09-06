@@ -27,11 +27,11 @@ namespace WivaldyBot.Models
         public async Task<Electricity> GetMeasures(DateTimeOffset start, DateTimeOffset stop)
         {
             //API is http://app.wivaldy.com/api/v1/json/privatekey/2016-11-01-08:00/2016-11-01-08:10
-            //API is http://app.wivaldy.com/api/v1/json/ {PRIVATE_KEY} /last
+            //API is http://app.wivaldy.com/api/v1/json/{PRIVATE_KEY}/last
             try
             {
                 HttpClient cli = new HttpClient();
-                string urlrequest = $"http://app.wivaldy.com/api/v1/json/{Connection}/";
+                string urlrequest = $"https://app.wivaldy.com/api/v1/json/{Connection}/";
                 //if both are null, then only last measure
                 if ((start == DateTimeOffset.MinValue) && (stop == DateTimeOffset.MinValue))
                     urlrequest += "last";
@@ -46,7 +46,7 @@ namespace WivaldyBot.Models
                     // END REMOVE
                     if (DateTimeOffset.Compare(start, stop) > 1)
                     { stop = start.AddDays(1); }
-                    urlrequest += start.ToString("yyyy-MM-dd-hh:mm") + "/" + stop.ToString("yyyy-MM-dd-hh:mm");
+                    urlrequest += start.ToString("yyyy-MM-dd-HH:mm") + "/" + stop.ToString("yyyy-MM-dd-HH:mm");
                 }
                 var str = await cli.GetStringAsync(new Uri(urlrequest));
                 Electricity elec = new Electricity();

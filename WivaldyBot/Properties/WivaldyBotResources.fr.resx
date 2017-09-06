@@ -117,158 +117,158 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlertAskInstant" xml:space="preserve">
-    <value>Which consumption alert do you want?</value>
-  </data>
-  <data name="AlertChange" xml:space="preserve">
-    <value>Change your existing alert?</value>
-  </data>
-  <data name="AlertChangeInstant" xml:space="preserve">
-    <value>Every {0} seconds with {1} watts threshold.</value>
-  </data>
-  <data name="AlertChangeTotal" xml:space="preserve">
-    <value>Every {0} seconds with {1} kWh threshold.</value>
-  </data>
-  <data name="AlertInstant" xml:space="preserve">
-    <value>Instant</value>
-  </data>
-  <data name="AlertInterval" xml:space="preserve">
-    <value>Pelase enter the inteval in seconds</value>
-  </data>
-  <data name="AlertReallySorry" xml:space="preserve">
-    <value>I'm really sorry, I didn't understand, please try again later.</value>
-  </data>
-  <data name="AlertRetryInterval" xml:space="preserve">
-    <value>I'm sorry I did not undersant, plrease try again to enter a number of seconds</value>
-  </data>
-  <data name="AlertRetryThreshold" xml:space="preserve">
-    <value>I'm sorry I did not undersant, plrease try again to enter a number for the threshold.Make sure you are using {0} as a decimal separator.</value>
-  </data>
-  <data name="AlertThresholdkWh" xml:space="preserve">
-    <value>Please enter your threshold in kWh</value>
-  </data>
-  <data name="AlertThresholdWatts" xml:space="preserve">
-    <value>Please enter your threshold in watts</value>
-  </data>
-  <data name="AlertTotal" xml:space="preserve">
-    <value>Total</value>
-  </data>
   <data name="CompareConsumptionBad" xml:space="preserve">
-    <value>![Bad]({0}/Images/wivaldy_icon_home-sleepy-200x200.png)</value>
+    <value>![Mauvais]({0}/Images/wivaldy_icon_home-sleepy-200x200.png)</value>
   </data>
   <data name="CompareConsumptionGood" xml:space="preserve">
-    <value>![Good]({0}/Images/wivaldy_icon_home-overload-200x200.png)</value>
+    <value>![Bien]({0}/Images/wivaldy_icon_home-overload-200x200.png)</value>
   </data>
   <data name="CompareConsumptionkWh" xml:space="preserve">
-    <value>{0} kWh vs {1} kWh.\r\n\r\n</value>
+    <value>{0} kWh vs {1} kWh.</value>
   </data>
   <data name="CompareConsumptionLastHourYesterday" xml:space="preserve">
-    <value>Your total consumption compare today last hour and yesterday same time is: </value>
+    <value>La comparaison de votre consommation totale entre hier et aujourd'hui pour la dernière heure est de </value>
   </data>
   <data name="CompareConsumptionTodayYesterday" xml:space="preserve">
-    <value>Your total consumption compare from yesterday and today at the same time is: </value>
+    <value>La comparaison de votre consommation totale entre hier et aujourd'hui à la même heure est de </value>
   </data>
   <data name="CompareConsumptionYesterdayDayBefore" xml:space="preserve">
-    <value>Your total consumption compare from yesterday and the day before is: </value>
+    <value>La comparaison de votre consommation totale entre avant hier et hier à la même heure est de</value>
   </data>
   <data name="DialogActivitySelect" xml:space="preserve">
-    <value>Select your activity</value>
+    <value>Sélectionnez une activité</value>
   </data>
   <data name="DialogActivityTellUs" xml:space="preserve">
-    <value>Tell us what you want to do</value>
+    <value>Dites-moi ce que vous voulez faire</value>
   </data>
   <data name="DialogCompareLastHourYesterdaySameTime" xml:space="preserve">
-    <value>Last hour with yesterday same time</value>
+    <value>Dernière heure avec hier même heure</value>
   </data>
   <data name="DialogCompareTodayYesterday" xml:space="preserve">
-    <value>Today and yesterday</value>
+    <value>Aujourd'hui et hier</value>
   </data>
   <data name="DialogCompareYesterdayDayBefore" xml:space="preserve">
-    <value>Yesterday and day before</value>
+    <value>Hier et avant-hier</value>
   </data>
   <data name="DialogConfirmationKey" xml:space="preserve">
-    <value>Thanks, now I have your key and can get your electricity details! Just type 'electricity'.</value>
+    <value>Merci, maintenant que vous avez une clé et que vous pouvez avoir vos détails, tapez 'électricité' pour commencer.</value>
   </data>
   <data name="DialogConsumptionDay" xml:space="preserve">
-    <value>Today</value>
+    <value>Aujourd'hui</value>
   </data>
   <data name="DialogConsumptionHour" xml:space="preserve">
-    <value>Last hour</value>
+    <value>Dernière heure</value>
   </data>
   <data name="DialogConsumptionInstant" xml:space="preserve">
-    <value>Instant</value>
+    <value>Instantannée</value>
   </data>
   <data name="DialogConsumptionLastDay" xml:space="preserve">
-    <value>Last day</value>
+    <value>Hier</value>
   </data>
   <data name="DialogElectricityConsumption" xml:space="preserve">
-    <value>Electric consumption</value>
+    <value>Consommation électrique</value>
   </data>
   <data name="DialogElectricityTellUs" xml:space="preserve">
-    <value>Please select the cunsomption you want to see</value>
+    <value>Sélectionnez la consommation que vous voulez</value>
   </data>
   <data name="DialogErrorMessage" xml:space="preserve">
-    <value>Ups, something went wrong.</value>
+    <value>Oups, quelque chose n'a pas fonctionné.</value>
   </data>
   <data name="DialogGetPrivateKey" xml:space="preserve">
-    <value>Before get started, can you please give me your private key?</value>
+    <value>Avant de commencer, entrez votre clé s'il vous plait.</value>
   </data>
   <data name="DialogKeyIs" xml:space="preserve">
-    <value>Your key is {0}</value>
+    <value>Votre clé est {0}</value>
   </data>
   <data name="DialogKeyRemoved" xml:space="preserve">
-    <value>Your key has been removed</value>
-  </data>
-  <data name="DialogNo" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="DialogWelcomeAlert" xml:space="preserve">
-    <value>alert</value>
+    <value>Votre clé a été supprimé.</value>
   </data>
   <data name="DialogWelcomeCompare" xml:space="preserve">
-    <value>compare</value>
+    <value>Comparer ma consommation</value>
   </data>
   <data name="DialogWelcomeElectricity" xml:space="preserve">
-    <value>electricity</value>
+    <value>Vérifier mon consommation</value>
   </data>
   <data name="DialogWelcomeKey" xml:space="preserve">
-    <value>key</value>
+    <value>Clé</value>
   </data>
   <data name="DialogWelcomeLogout" xml:space="preserve">
-    <value>logout</value>
+    <value>Se déconnecter</value>
   </data>
   <data name="DialogWelcomeMessage" xml:space="preserve">
-    <value>Welcome to Wivaldy bot, just write anything and I'll help you :-) Type 'key' to get your current key, 'logout' to clear your key.</value>
-  </data>
-  <data name="DialogYes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Bienvenu dans Wivaldy bot, écrivez quelque chose pour commencer et je vais vous aider :-). Tapez 'clé' pour obtenir votre clé  ou 'se déconnecter' pour la supprimer.</value>
   </data>
   <data name="TotalConsumptionInstant" xml:space="preserve">
     <value>{0} watts.</value>
   </data>
   <data name="TotalConsumptionKwh" xml:space="preserve">
-    <value>{0} kWh. . Cost is approximately {1} €.</value>
+    <value>{0} kWh. . Coût d'environ {1} €.</value>
   </data>
   <data name="TotalConsumptionLastHour" xml:space="preserve">
-    <value>Your total consumption for last hour is: </value>
+    <value>Votre consommation totale pour la dernière heure est </value>
   </data>
   <data name="TotalConsumptionNoData" xml:space="preserve">
-    <value>Sorry, there is no data available.</value>
+    <value>Désolé, il n'y a aucune donnée disponible.Sorry, there is no data available.</value>
   </data>
   <data name="TotalConsumptionNow" xml:space="preserve">
-    <value>Your instant consumption is: </value>
+    <value>Votre consommation instantannée est </value>
   </data>
   <data name="TotalConsumptionTodayIs" xml:space="preserve">
-    <value>Your total consumption for today is: </value>
+    <value>Votre consommation totale pour aujourd'hui est </value>
   </data>
   <data name="TotalConsumptionYesterday" xml:space="preserve">
-    <value>Your total consumption for yesterday is: </value>
+    <value>Votre consommation totale d'hier est </value>
   </data>
   <data name="WivaldiConnectionString" xml:space="preserve">
     <value>wivaldystring</value>
     <comment>Do not localize</comment>
   </data>
+  <data name="AlertAskInstant" xml:space="preserve">
+    <value>Quelle type d'alerte souhaitez-vous?</value>
+  </data>
+  <data name="AlertChange" xml:space="preserve">
+    <value>Changer votre alerte existante?</value>
+  </data>
+  <data name="AlertChangeInstant" xml:space="preserve">
+    <value>Toutes les {0} secondes avec un seuil de {1} watts. </value>
+  </data>
+  <data name="AlertChangeTotal" xml:space="preserve">
+    <value>Toutes les {0} secondes avec un seuil de {1} kWh. </value>
+  </data>
+  <data name="AlertInstant" xml:space="preserve">
+    <value>Instantanné</value>
+  </data>
+  <data name="AlertInterval" xml:space="preserve">
+    <value>Saisissez un interval en secondes.</value>
+  </data>
   <data name="AlertOK" xml:space="preserve">
-    <value>You have setup a new alert: </value>
+    <value>Vous avez créer une alerte: </value>
+  </data>
+  <data name="AlertReallySorry" xml:space="preserve">
+    <value>Je suis vraiment désolé mais je ne comprends vraiment pas. Essayez plus tard.</value>
+  </data>
+  <data name="AlertRetryInterval" xml:space="preserve">
+    <value>Je suis désolé, je ne comprends pas. Essayez encore de saisir un nombre de secondes.</value>
+  </data>
+  <data name="AlertRetryThreshold" xml:space="preserve">
+    <value>Je suis désolé, je ne comprends pas. Essayez encore de saisir un nombre pour le seuil. Vérifiez que vous utilisez bien {0} comme séparateur décimal.</value>
+  </data>
+  <data name="AlertThresholdkWh" xml:space="preserve">
+    <value>Saisissez votre seuil en kWh.</value>
+  </data>
+  <data name="AlertThresholdWatts" xml:space="preserve">
+    <value>Saisissez votre seuil en watts.</value>
+  </data>
+  <data name="AlertTotal" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="DialogNo" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="DialogWelcomeAlert" xml:space="preserve">
+    <value>Paramétrer une alerte</value>
+  </data>
+  <data name="DialogYes" xml:space="preserve">
+    <value>Oui</value>
   </data>
 </root>
