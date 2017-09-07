@@ -187,7 +187,7 @@
     <value>Comparer ma consommation</value>
   </data>
   <data name="DialogWelcomeElectricity" xml:space="preserve">
-    <value>Vérifier mon consommation</value>
+    <value>Vérifier ma consommation</value>
   </data>
   <data name="DialogWelcomeKey" xml:space="preserve">
     <value>Clé</value>
@@ -235,11 +235,29 @@
   <data name="AlertChangeTotal" xml:space="preserve">
     <value>Toutes les {0} secondes avec un seuil de {1} kWh. </value>
   </data>
+  <data name="AlertEnd" xml:space="preserve">
+    <value>*Fin des alertes.* N'hésitez pas à en reparamétrer.</value>
+  </data>
+  <data name="AlertEndMax" xml:space="preserve">
+    <value>*Fin des alertes.* Vous avez atteind le nombre maximum d'alerts. Paramétrez une autre alerte pour en recevoir de nouveau.</value>
+  </data>
+  <data name="AlertExceedInstant" xml:space="preserve">
+    <value>**Votre consommation a dépassé le seuil** et est de {0} watts vs {1} watts</value>
+  </data>
+  <data name="AlertExceedTotal" xml:space="preserve">
+    <value>**Votre consommation a dépassé le seuil** et est de {0} kWh vs {1} kWh</value>
+  </data>
   <data name="AlertInstant" xml:space="preserve">
     <value>Instantanné</value>
   </data>
   <data name="AlertInterval" xml:space="preserve">
     <value>Saisissez un interval en secondes.</value>
+  </data>
+  <data name="AlertMaxTime" xml:space="preserve">
+    <value>Le nombre de minutes maximum pour lesquels vous pouvez avoir des notifications est de {0} minutes, donc cette valeur sera utilisée.</value>
+  </data>
+  <data name="AlertMinSec" xml:space="preserve">
+    <value>Le temps minimum pour un rafraichissement des données est de {0}, donc cette valeur sera utilisée.</value>
   </data>
   <data name="AlertOK" xml:space="preserve">
     <value>Vous avez créer une alerte: </value>
@@ -250,6 +268,9 @@
   <data name="AlertRetryInterval" xml:space="preserve">
     <value>Je suis désolé, je ne comprends pas. Essayez encore de saisir un nombre de secondes.</value>
   </data>
+  <data name="AlertRetryMaxTime" xml:space="preserve">
+    <value>Je suis désolé, je ne comprends pas. Essayez encore de saisir un nombre de minutes.</value>
+  </data>
   <data name="AlertRetryThreshold" xml:space="preserve">
     <value>Je suis désolé, je ne comprends pas. Essayez encore de saisir un nombre pour le seuil. Vérifiez que vous utilisez bien {0} comme séparateur décimal.</value>
   </data>
@@ -258,6 +279,9 @@
   </data>
   <data name="AlertThresholdWatts" xml:space="preserve">
     <value>Saisissez votre seuil en watts.</value>
+  </data>
+  <data name="AlertTime" xml:space="preserve">
+    <value>Saisissez le nombre de minutes pendant lesquelles vous voulez recevoir des alertes.</value>
   </data>
   <data name="AlertTotal" xml:space="preserve">
     <value>Total</value>

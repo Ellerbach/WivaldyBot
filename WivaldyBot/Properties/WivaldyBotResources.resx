@@ -268,7 +268,31 @@
     <value>wivaldystring</value>
     <comment>Do not localize</comment>
   </data>
+  <data name="AlertEnd" xml:space="preserve">
+    <value>*End of Alerts.* Don't hsitate to resetup alerts if you want.</value>
+  </data>
+  <data name="AlertEndMax" xml:space="preserve">
+    <value>*End of Alerts.* You've reach the maximum number of alerts for this session. Please schedule another alert to receive more alerts.</value>
+  </data>
+  <data name="AlertExceedInstant" xml:space="preserve">
+    <value>**Your consumption exceed your threshold** and it is {0} watts vs {1} watts</value>
+  </data>
+  <data name="AlertExceedTotal" xml:space="preserve">
+    <value>**Your consumption exceed your threshold** and it is {0} kWh vs {1} kWh</value>
+  </data>
+  <data name="AlertMaxTime" xml:space="preserve">
+    <value>The maximum number of minutes you can get notifications is {0} minutes, so setting it to the maximum.</value>
+  </data>
+  <data name="AlertMinSec" xml:space="preserve">
+    <value>The minimum number of seconds between two refresh is fiwed at {0}, so setting it to the minimum.</value>
+  </data>
   <data name="AlertOK" xml:space="preserve">
     <value>You have setup a new alert: </value>
+  </data>
+  <data name="AlertRetryMaxTime" xml:space="preserve">
+    <value>I'm sorry I did not undersant, plrease try again to enter a number of minutes.</value>
+  </data>
+  <data name="AlertTime" xml:space="preserve">
+    <value>Please enter the maximum minutes you want to receive notifications.</value>
   </data>
 </root>

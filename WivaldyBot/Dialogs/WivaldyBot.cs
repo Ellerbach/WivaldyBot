@@ -8,18 +8,66 @@ using WivaldyBot.Models;
 using System.Globalization;
 using static WivaldyBot.Models.Wivaldy;
 using WivaldyBot.Properties;
+using Microsoft.Bot.Builder.ConnectorEx;
+using Newtonsoft.Json;
+using WivaldyBot.Controllers;
+using System.Threading;
+using System.Web;
+using System.Configuration;
+using System.Runtime.Serialization;
 
 namespace WivaldyBot.Dialogs
 {
     [Serializable]
     public class WivaldyDialog : IDialog<object>
     {
-        private Wivaldy myWivaldy = new Wivaldy();
-        private Alert alert = new Alert();
+        //for alerts
+        [NonSerialized]
+        Timer tAlert;
+        DateTimeOffset StartAlert;
+        private int AlertMaxNumber;
+        private int NumberAlerts = 0;
+        private Alert alert;
+
+        // versionning
+        private int version = 0;
+
+        // WyvaldiAP + message detaisl for callback 
+        private Wivaldy myWivaldy;
+        MessageDetails me;
+
         //TODO: change to get right URL
         private const string URL = "https://wivaldy.azurewebsites.net";
 
         private ResumptionCookie resumptionCookie;
+
+        public WivaldyDialog()
+        {
+            ResetSettings();
+        }
+
+        #region init Settings
+        [OnDeserialized()]
+        internal void OnDeserializingMethod(StreamingContext context)
+        {
+            int ver = 0;
+            int.TryParse(ConfigurationManager.AppSettings["BotVersion"], out ver);
+            if (ver > version)
+            {
+                version = ver;
+                ResetSettings();
+            }
+        }
+        private void ResetSettings()
+        {
+            alert = new Alert();
+            NumberAlerts = 0;
+            int.TryParse(ConfigurationManager.AppSettings["AlertMaxNumber"], out AlertMaxNumber);
+            myWivaldy = new Wivaldy();
+            me = new MessageDetails();
+        }
+        #endregion
+
         public async Task StartAsync(IDialogContext context)
         {
             await WelcomeMessageAsync(context);
@@ -91,7 +139,39 @@ namespace WivaldyBot.Dialogs
                 }
                 else if (message.Text == WivaldyBotResources.DialogWelcomeAlert)
                 {
-                    context.Call(new DialogAlert(this.alert), this.DialogAletrResumeAfter);
+
+                    // Store information about this specific point the conversation, so that the bot can resume this conversation later.
+                    if (me.serviceUrl == null)
+                    {
+                        me = new MessageDetails();
+                        me.toId = message.From.Id;
+                        me.toName = message.From.Name;
+                        me.fromId = message.Recipient.Id;
+                        me.fromName = message.Recipient.Name;
+                        me.serviceUrl = message.ServiceUrl;
+                        me.channelId = message.ChannelId;
+                        me.conversationId = message.Conversation.Id;
+                        me.cultureInfo = System.Globalization.CultureInfo.CurrentUICulture;
+                    }
+                    bool bFound = false;
+                    foreach (var mess in ConversationStarter.messageDetails)
+                    {
+                        if (mess.channelId == me.channelId)
+                            if (mess.conversationId == me.conversationId)
+                                if (mess.fromId == me.fromId)
+                                    if (mess.fromName == me.fromName)
+                                        if (mess.serviceUrl == me.serviceUrl)
+                                            if (mess.toId == me.toId)
+                                                if (mess.toName == me.toName)
+                                                {
+                                                    bFound = true;
+                                                    break;
+                                                }
+                    }
+                    if (!bFound)
+                        ConversationStarter.messageDetails.Add(me);
+
+                    context.Call(new DialogAlert(this.alert), this.DialogAlertResumeAfter);
                     return;
                 }
                 await this.WelcomeMessageAsync(context);
@@ -101,7 +181,7 @@ namespace WivaldyBot.Dialogs
                 var reply = context.MakeMessage();
 
                 reply.Text = $"{WivaldyBotResources.DialogErrorMessage}: {ex.Message}";
-
+                ResetSettings();
                 await context.PostAsync(reply);
                 await this.WelcomeMessageAsync(context);
             }
@@ -225,7 +305,7 @@ namespace WivaldyBot.Dialogs
             }
             else
             {
-                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData; 
+                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData;
             }
 
             reply.Text = strresp;
@@ -266,7 +346,7 @@ namespace WivaldyBot.Dialogs
 
                 double wattshourA = GetWattHour(resA) / 1000;
                 double wattshourB = GetWattHour(resB) / 1000;
-                strresp += String.Format(WivaldyBotResources.CompareConsumptionkWh,wattshourA.ToString("N1", CultureInfo.CurrentUICulture), wattshourB.ToString("N1", CultureInfo.CurrentUICulture));
+                strresp += String.Format(WivaldyBotResources.CompareConsumptionkWh, wattshourA.ToString("N1", CultureInfo.CurrentUICulture), wattshourB.ToString("N1", CultureInfo.CurrentUICulture));
                 strresp += "\n\n";
                 // need to add correct markdown image
                 if (wattshourA > wattshourB)
@@ -276,7 +356,7 @@ namespace WivaldyBot.Dialogs
             }
             else
             {
-                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData; 
+                strresp = WivaldyBotResources.DialogErrorMessage + " " + WivaldyBotResources.TotalConsumptionNoData;
             }
 
             reply.Text = strresp;
@@ -301,24 +381,106 @@ namespace WivaldyBot.Dialogs
                 await context.PostAsync(WivaldyBotResources.DialogErrorMessage + $"{ex.Message}");
             }
 
-            context.Wait(this.MessageReceivedAsync);
+            //context.Wait(this.MessageReceivedAsync);
+            await this.WelcomeMessageAsync(context);
         }
 
-        private async Task DialogAletrResumeAfter(IDialogContext context, IAwaitable<Alert> result)
+        private async Task DialogAlertResumeAfter(IDialogContext context, IAwaitable<Alert> result)
         {
             this.alert = await result;
             var reply = context.MakeMessage();
             reply.Text = string.Format(WivaldyBotResources.AlertOK);
             if (alert.IsInstant)
-                reply.Text += string.Format(WivaldyBotResources.AlertChangeInstant, alert.Interval, alert.Threshold);
+                reply.Text += string.Format(WivaldyBotResources.AlertChangeInstant, alert.Interval.TotalSeconds, alert.Threshold);
             else
-                reply.Text += string.Format(WivaldyBotResources.AlertChangeTotal, alert.Interval, alert.Threshold);
+                reply.Text += string.Format(WivaldyBotResources.AlertChangeTotal, alert.Interval.TotalSeconds, alert.Threshold);
             await context.PostAsync(reply);
-            reply.Text = "Alert not yet implemented";
-            await context.PostAsync(reply);
+
+            StartAlert = DateTimeOffset.Now;
+            tAlert = new Timer(new TimerCallback(TimerEventAsync));
+            tAlert.Change((int)alert.Interval.TotalMilliseconds, (int)alert.Interval.TotalMilliseconds);
+            NumberAlerts = 0;
+            try
+            {
+                var ret = ConversationStarter.Timers[context.Activity.Conversation.Id + context.Activity.ChannelId];
+                ConversationStarter.Timers[context.Activity.Conversation.Id + context.Activity.ChannelId] = tAlert.GetHashCode();
+            }
+            catch (Exception)
+            {
+                ConversationStarter.Timers.Add(context.Activity.Conversation.Id + context.Activity.ChannelId, tAlert.GetHashCode());
+            }
+
+            //var url = HttpContext.Current.Request.Url;
+            //We now tell the user that we will talk to them in a few seconds
+
+            //reply.Text = "Hello! In a few seconds I'll send you a message proactively to demonstrate how bots can initiate messages. You can also make me send a message by accessing: " +
+            //        url.Scheme + "://" + url.Host + ":" + url.Port + "/api/CustomWebApi";
+            //await context.PostAsync(reply);
 
             await WelcomeMessageAsync(context);
         }
+
+        private void TimerEventAsync(object target)
+        {
+            //remove previously created timers
+            var ret = ConversationStarter.Timers[me.conversationId + me.channelId];
+            if (ret != tAlert.GetHashCode())
+            {
+                tAlert.Dispose();
+                return;
+            }
+
+            if (StartAlert.Add(alert.MaxTime) <= DateTimeOffset.Now)
+            {
+                tAlert.Dispose();
+                ConversationStarter.EndAlerts(me.conversationId, me.channelId);
+            }
+            if (NumberAlerts > AlertMaxNumber)
+            {
+                tAlert.Dispose();
+                ConversationStarter.EndAlertsMax(me.conversationId, me.channelId);
+            }
+            Electricity res = null;
+            float consumption = 0;
+            if (alert.IsInstant)
+            {
+                var t = myWivaldy.GetMeasures(DateTimeOffset.Now.Add(-alert.Interval), DateTimeOffset.Now);
+                t.Wait();
+                res = t.Result;
+                if (res != null)
+                {
+                    foreach (var wat in res.Consumptions)
+                    {
+                        if (wat.watts >= alert.Threshold)
+                        {
+                            if (consumption < wat.watts)
+                                consumption = wat.watts;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                DateTimeOffset today = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
+                var t = myWivaldy.GetDayMeasures(today);
+                t.Wait();
+                res = t.Result;
+                if (res != null)
+                {
+                    var cons = GetWattHour(res);
+                    if (cons >= alert.Threshold)
+                        consumption = (float)cons;
+                }
+
+            }
+            if (consumption > 0)
+            {
+                NumberAlerts++;
+                ConversationStarter.Resume(me.conversationId, me.channelId, consumption, alert);
+            }
+        }
+
+
 
     }
 }

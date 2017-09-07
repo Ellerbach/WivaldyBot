@@ -7,6 +7,7 @@ using WivaldyBot.Models;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
 using WivaldyBot.Properties;
+using System.Configuration;
 
 namespace WivaldyBot.Dialogs
 {
@@ -17,13 +18,20 @@ namespace WivaldyBot.Dialogs
         private const int MAXTRY = 3;
         private int attempts = MAXTRY;
 
+        TimeSpan AlertMaxTime = new TimeSpan(0, 10, 0);
+        private int AlertMinRefresh;
+
         public DialogAlert(Alert alert)
-        {
+        {            
+            int.TryParse(ConfigurationManager.AppSettings["AlertMinRefresh"], out AlertMinRefresh);
+            TimeSpan.TryParse(ConfigurationManager.AppSettings["AlertMaxTime"], out AlertMaxTime);
             myAlert = alert;
         }
 
         public async Task StartAsync(IDialogContext context)
         {
+
+
             await this.WelcomeMessageAsync(context);
 
         }
@@ -83,7 +91,7 @@ namespace WivaldyBot.Dialogs
             Attachment plAttachment = plCard.ToAttachment();
             reply.Attachments.Add(plAttachment);
             await context.PostAsync(reply);
-            context.Wait(this.AskInstant);           
+            context.Wait(this.AskInstant);
         }
 
         public async Task MessageThreshold(IDialogContext context)
@@ -93,7 +101,7 @@ namespace WivaldyBot.Dialogs
                 await context.PostAsync(WivaldyBotResources.AlertThresholdWatts);
             else
                 await context.PostAsync(WivaldyBotResources.AlertThresholdkWh);
-            context.Wait(this.AskThreshold);            
+            context.Wait(this.AskThreshold);
         }
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
@@ -129,8 +137,14 @@ namespace WivaldyBot.Dialogs
             {
                 if (sec > 0)
                 {
+                    if (sec < AlertMinRefresh)
+                    {
+                        await context.PostAsync(string.Format(WivaldyBotResources.AlertMinSec, AlertMinRefresh));
+                        sec = AlertMinRefresh;
+                    }
                     myAlert.Interval = TimeSpan.FromSeconds(sec);
-                    await this.MessageIsInstant(context);
+
+                    await this.MessageMaxTime(context);
                     return;
                 }
             }
@@ -140,6 +154,49 @@ namespace WivaldyBot.Dialogs
             {
                 await context.PostAsync(WivaldyBotResources.AlertRetryInterval);
                 context.Wait(this.AskInterval);
+            }
+            else
+            {
+                await context.PostAsync(WivaldyBotResources.AlertReallySorry);
+                context.Done(this.myAlert);
+            }
+        }
+
+        public async Task MessageMaxTime(IDialogContext context)
+        {
+            //ask for the interval in seconds
+            await context.PostAsync(WivaldyBotResources.AlertTime);
+            context.Wait(this.AskMaxTime);
+        }
+
+
+        private async Task AskMaxTime(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var message = await result;
+            //Need to check if it is a valid number
+            //string crr = message;
+            int sec = 0;
+            if (int.TryParse(message.Text, out sec))
+            {
+                if (sec > 0)
+                {
+                    if (sec > AlertMaxTime.TotalMinutes)
+                    {
+                        await context.PostAsync(string.Format(WivaldyBotResources.AlertMaxTime, AlertMaxTime.TotalMinutes));
+                        sec = AlertMinRefresh;
+                    }
+                    myAlert.MaxTime = TimeSpan.FromMinutes(sec);
+
+                    await this.MessageIsInstant(context);
+                    return;
+                }
+            }
+
+            --attempts;
+            if (attempts > 0)
+            {
+                await context.PostAsync(WivaldyBotResources.AlertRetryMaxTime);
+                context.Wait(this.AskMaxTime);
             }
             else
             {

@@ -97,6 +97,42 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to *End of Alerts.* Don&apos;t hsitate to resetup alerts if you want..
+        /// </summary>
+        internal static string AlertEnd {
+            get {
+                return ResourceManager.GetString("AlertEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to *End of Alerts.* You&apos;ve reach the maximum number of alerts for this session. Please schedule another alert to receive more alerts..
+        /// </summary>
+        internal static string AlertEndMax {
+            get {
+                return ResourceManager.GetString("AlertEndMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to **Your consumption exceed your threshold** and it is {0} watts vs {1} watts.
+        /// </summary>
+        internal static string AlertExceedInstant {
+            get {
+                return ResourceManager.GetString("AlertExceedInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to **Your consumption exceed your threshold** and it is {0} kWh vs {1} kWh.
+        /// </summary>
+        internal static string AlertExceedTotal {
+            get {
+                return ResourceManager.GetString("AlertExceedTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instant.
         /// </summary>
         internal static string AlertInstant {
@@ -111,6 +147,24 @@ namespace WivaldyBot.Properties {
         internal static string AlertInterval {
             get {
                 return ResourceManager.GetString("AlertInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum number of minutes you can get notifications is {0} minutes, so setting it to the maximum..
+        /// </summary>
+        internal static string AlertMaxTime {
+            get {
+                return ResourceManager.GetString("AlertMaxTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The minimum number of seconds between two refresh is fiwed at {0}, so setting it to the minimum..
+        /// </summary>
+        internal static string AlertMinSec {
+            get {
+                return ResourceManager.GetString("AlertMinSec", resourceCulture);
             }
         }
         
@@ -142,6 +196,15 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to I&apos;m sorry I did not undersant, plrease try again to enter a number of minutes..
+        /// </summary>
+        internal static string AlertRetryMaxTime {
+            get {
+                return ResourceManager.GetString("AlertRetryMaxTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I&apos;m sorry I did not undersant, plrease try again to enter a number for the threshold.Make sure you are using {0} as a decimal separator..
         /// </summary>
         internal static string AlertRetryThreshold {
@@ -165,6 +228,15 @@ namespace WivaldyBot.Properties {
         internal static string AlertThresholdWatts {
             get {
                 return ResourceManager.GetString("AlertThresholdWatts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the maximum minutes you want to receive notifications..
+        /// </summary>
+        internal static string AlertTime {
+            get {
+                return ResourceManager.GetString("AlertTime", resourceCulture);
             }
         }
         
