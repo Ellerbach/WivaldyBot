@@ -289,7 +289,7 @@ namespace WivaldyBot.Dialogs
             {
                 if (res.Consumptions.Length > 1)
                 {
-                    double wattshour = GetWattHour(res) / 1000;
+                    double wattshour = GetKiloWattHour(res);
                     //only for the prototype, cost is .13€ per KWh in France
                     double cost = wattshour * 0.13;
                     strresp += String.Format(WivaldyBotResources.TotalConsumptionKwh, wattshour.ToString("N1", CultureInfo.CurrentUICulture), cost.ToString("N2", CultureInfo.CurrentUICulture));
@@ -344,8 +344,8 @@ namespace WivaldyBot.Dialogs
             if ((resA != null) && (resB != null))
             {
 
-                double wattshourA = GetWattHour(resA) / 1000;
-                double wattshourB = GetWattHour(resB) / 1000;
+                double wattshourA = GetKiloWattHour(resA);
+                double wattshourB = GetKiloWattHour(resB);
                 strresp += String.Format(WivaldyBotResources.CompareConsumptionkWh, wattshourA.ToString("N1", CultureInfo.CurrentUICulture), wattshourB.ToString("N1", CultureInfo.CurrentUICulture));
                 strresp += "\n\n";
                 // need to add correct markdown image
@@ -467,7 +467,7 @@ namespace WivaldyBot.Dialogs
                 res = t.Result;
                 if (res != null)
                 {
-                    var cons = GetWattHour(res);
+                    var cons = GetKiloWattHour(res);
                     if (cons >= alert.Threshold)
                         consumption = (float)cons;
                 }

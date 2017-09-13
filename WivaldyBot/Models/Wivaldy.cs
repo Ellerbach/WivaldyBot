@@ -104,6 +104,12 @@ namespace WivaldyBot.Models
             }
         }
 
+        public static double GetKiloWattHour(Electricity res)
+        {
+            return GetWattHour(res) / 1000.0;
+        }
+
+
         public class Electricity
         {
             public Consumption[] Consumptions { get; set; }
