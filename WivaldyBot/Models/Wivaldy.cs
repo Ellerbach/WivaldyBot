@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using WivaldyBot.Models.WivaldyObjects;
 
 namespace WivaldyBot.Models
 {
@@ -14,15 +15,14 @@ namespace WivaldyBot.Models
     {
         public string Connection { get; set; }
 
-        public Wivaldy()
-        {
-
-        }
+        public Wivaldy() { }
 
         public Wivaldy(string connection)
         {
             Connection = connection;
         }
+
+        #region Consumption
 
         public async Task<Electricity> GetMeasures(DateTimeOffset start, DateTimeOffset stop)
         {
@@ -109,17 +109,33 @@ namespace WivaldyBot.Models
             return GetWattHour(res) / 1000.0;
         }
 
+        #endregion
 
-        public class Electricity
+#region DeviceRemoteCommand
+
+        public async Task<RemoteCommand>GetRemoteCommand()
         {
-            public Consumption[] Consumptions { get; set; }
+            //https://app-recette.wivaldy.com/api/v1/device-remote-command/{secret key}/last
+            try
+            {
+                HttpClient cli = new HttpClient();
+                string urlrequest = $"https://app-recette.wivaldy.com/api/v1/device-remote-command/{Connection}/last";
+                //if both are null, then only last measure
+                
+                var str = await cli.GetStringAsync(new Uri(urlrequest));
+                var measure = JsonConvert.DeserializeObject<RemoteCommand>(str);
+                return measure;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"exception: {ex.Message}");
+            }
+            return null;
         }
 
-        public class Consumption
-        {
-            public int epoch { get; set; }
-            public int watts { get; set; }
-        }
+
+
+        #endregion
 
     }
 }

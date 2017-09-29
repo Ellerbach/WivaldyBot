@@ -295,4 +295,16 @@
   <data name="DialogYes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="AlertChangeSwitch" xml:space="preserve">
+    <value>Vérifier les commandes toutes les {0} secondes</value>
+  </data>
+  <data name="AlertExceedSwitch" xml:space="preserve">
+    <value>**Alerte sur commande** {0}</value>
+  </data>
+  <data name="AlertSwitch" xml:space="preserve">
+    <value>Commande</value>
+  </data>
+  <data name="AlertThresholdSwitch" xml:space="preserve">
+    <value>Please enter SWITCH TODO NOTIMPLEMENTED</value>
+  </data>
 </root>

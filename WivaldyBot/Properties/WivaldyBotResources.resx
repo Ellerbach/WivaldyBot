@@ -295,4 +295,16 @@
   <data name="AlertTime" xml:space="preserve">
     <value>Please enter the maximum minutes you want to receive notifications.</value>
   </data>
+  <data name="AlertChangeSwitch" xml:space="preserve">
+    <value>Check remote command every {0} seconds</value>
+  </data>
+  <data name="AlertExceedSwitch" xml:space="preserve">
+    <value>**Alert on switch** {0}</value>
+  </data>
+  <data name="AlertSwitch" xml:space="preserve">
+    <value>Switch</value>
+  </data>
+  <data name="AlertThresholdSwitch" xml:space="preserve">
+    <value>Please enter SWITCH TODO NOTIMPLEMENTED</value>
+  </data>
 </root>

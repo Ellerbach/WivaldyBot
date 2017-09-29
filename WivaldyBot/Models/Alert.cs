@@ -10,7 +10,10 @@ namespace WivaldyBot.Models
     {
         public TimeSpan Interval { get; set; }
         public float Threshold { get; set; }
-        public bool IsInstant { get; set; }
+        public AlertEnum AlertType { get; set; }
         public TimeSpan MaxTime { get; set; }
     }
+
+    public enum AlertEnum
+    { Instant, Total, Switch }
 }

@@ -15,6 +15,7 @@ using System.Threading;
 using System.Web;
 using System.Configuration;
 using System.Runtime.Serialization;
+using WivaldyBot.Models.WivaldyObjects;
 
 namespace WivaldyBot.Dialogs
 {
@@ -28,6 +29,7 @@ namespace WivaldyBot.Dialogs
         private int AlertMaxNumber;
         private int NumberAlerts = 0;
         private Alert alert;
+        private RemoteCommand remoteCommand;
 
         // versionning
         private int version = 0;
@@ -65,6 +67,9 @@ namespace WivaldyBot.Dialogs
             int.TryParse(ConfigurationManager.AppSettings["AlertMaxNumber"], out AlertMaxNumber);
             myWivaldy = new Wivaldy();
             me = new MessageDetails();
+            remoteCommand = new RemoteCommand();
+            remoteCommand.date = new Date();
+            remoteCommand.date.millis = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         }
         #endregion
 
@@ -390,12 +395,31 @@ namespace WivaldyBot.Dialogs
             this.alert = await result;
             var reply = context.MakeMessage();
             reply.Text = string.Format(WivaldyBotResources.AlertOK);
-            if (alert.IsInstant)
-                reply.Text += string.Format(WivaldyBotResources.AlertChangeInstant, alert.Interval.TotalSeconds, alert.Threshold);
-            else
-                reply.Text += string.Format(WivaldyBotResources.AlertChangeTotal, alert.Interval.TotalSeconds, alert.Threshold);
-            await context.PostAsync(reply);
+            switch (alert.AlertType)
+            {
+                case AlertEnum.Instant:
+                    reply.Text += string.Format(WivaldyBotResources.AlertChangeInstant, alert.Interval.TotalSeconds, alert.Threshold);
+                    break;
+                case AlertEnum.Total:
+                    reply.Text += string.Format(WivaldyBotResources.AlertChangeTotal, alert.Interval.TotalSeconds, alert.Threshold);
+                    break;
+                case AlertEnum.Switch:
+                    reply.Text += string.Format(WivaldyBotResources.AlertChangeSwitch, alert.Interval.TotalSeconds); 
+                    break;
+                default:
+                    break;
+            }
 
+            await context.PostAsync(reply);
+            if (alert.AlertType == AlertEnum.Switch)
+            {
+                //initialize the last command
+                var res = await myWivaldy.GetRemoteCommand();
+                if(res!=null)
+                {
+                    remoteCommand = res;
+                }
+            }
             StartAlert = DateTimeOffset.Now;
             tAlert = new Timer(new TimerCallback(TimerEventAsync));
             tAlert.Change((int)alert.Interval.TotalMilliseconds, (int)alert.Interval.TotalMilliseconds);
@@ -442,36 +466,54 @@ namespace WivaldyBot.Dialogs
             }
             Electricity res = null;
             float consumption = 0;
-            if (alert.IsInstant)
+
+            switch (alert.AlertType)
             {
-                var t = myWivaldy.GetMeasures(DateTimeOffset.Now.Add(-alert.Interval), DateTimeOffset.Now);
-                t.Wait();
-                res = t.Result;
-                if (res != null)
-                {
-                    foreach (var wat in res.Consumptions)
+                case AlertEnum.Instant:
+                    var t = myWivaldy.GetMeasures(DateTimeOffset.Now.Add(-alert.Interval), DateTimeOffset.Now);
+                    t.Wait();
+                    res = t.Result;
+                    if (res != null)
                     {
-                        if (wat.watts >= alert.Threshold)
+                        foreach (var wat in res.Consumptions)
                         {
-                            if (consumption < wat.watts)
-                                consumption = wat.watts;
+                            if (wat.watts >= alert.Threshold)
+                            {
+                                if (consumption < wat.watts)
+                                    consumption = wat.watts;
+                            }
                         }
                     }
-                }
-            }
-            else
-            {
-                DateTimeOffset today = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
-                var t = myWivaldy.GetDayMeasures(today);
-                t.Wait();
-                res = t.Result;
-                if (res != null)
-                {
-                    var cons = GetKiloWattHour(res);
-                    if (cons >= alert.Threshold)
-                        consumption = (float)cons;
-                }
+                    break;
+                case AlertEnum.Total:
+                    DateTimeOffset today = new DateTimeOffset(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, 0, 0, 0, DateTimeOffset.Now.Offset);
+                    var t1 = myWivaldy.GetDayMeasures(today);
+                    t1.Wait();
+                    res = t1.Result;
+                    if (res != null)
+                    {
+                        var cons = GetKiloWattHour(res);
+                        if (cons >= alert.Threshold)
+                            consumption = (float)cons;
+                    }
+                    break;
+                case AlertEnum.Switch:
+                    var cmd = myWivaldy.GetRemoteCommand();
+                    cmd.Wait();
+                    RemoteCommand rmc = cmd.Result;
+                    if (rmc != null)
+                    {
+                        if (rmc.date.millis > remoteCommand.date.millis)
+                        {
+                            remoteCommand = rmc;
+                            //raise an alert
+                            ConversationStarter.ResumeCommand(me.conversationId, me.channelId, rmc.commandType, alert);
+                        }
+                    }
 
+                    break;
+                default:
+                    break;                     
             }
             if (consumption > 0)
             {

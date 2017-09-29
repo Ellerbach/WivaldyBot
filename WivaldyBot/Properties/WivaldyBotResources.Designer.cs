@@ -19,7 +19,7 @@ namespace WivaldyBot.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class WivaldyBotResources {
@@ -88,6 +88,15 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check remote command every {0} seconds.
+        /// </summary>
+        internal static string AlertChangeSwitch {
+            get {
+                return ResourceManager.GetString("AlertChangeSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Every {0} seconds with {1} kWh threshold..
         /// </summary>
         internal static string AlertChangeTotal {
@@ -120,6 +129,15 @@ namespace WivaldyBot.Properties {
         internal static string AlertExceedInstant {
             get {
                 return ResourceManager.GetString("AlertExceedInstant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to **Alert on switch** {0}.
+        /// </summary>
+        internal static string AlertExceedSwitch {
+            get {
+                return ResourceManager.GetString("AlertExceedSwitch", resourceCulture);
             }
         }
         
@@ -214,11 +232,29 @@ namespace WivaldyBot.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch.
+        /// </summary>
+        internal static string AlertSwitch {
+            get {
+                return ResourceManager.GetString("AlertSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter your threshold in kWh.
         /// </summary>
         internal static string AlertThresholdkWh {
             get {
                 return ResourceManager.GetString("AlertThresholdkWh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter SWITCH TODO NOTIMPLEMENTED.
+        /// </summary>
+        internal static string AlertThresholdSwitch {
+            get {
+                return ResourceManager.GetString("AlertThresholdSwitch", resourceCulture);
             }
         }
         

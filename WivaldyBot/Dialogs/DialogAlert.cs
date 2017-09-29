@@ -52,10 +52,20 @@ namespace WivaldyBot.Dialogs
                 };
 
                 plCard.Title = WivaldyBotResources.AlertChange;
-                if (myAlert.IsInstant)
-                    plCard.Subtitle = String.Format(WivaldyBotResources.AlertChangeInstant, myAlert.Interval.TotalSeconds, myAlert.Threshold);
-                else
-                    plCard.Subtitle = String.Format(WivaldyBotResources.AlertChangeTotal, myAlert.Interval.TotalSeconds, myAlert.Threshold);
+                switch (myAlert.AlertType)
+                {
+                    case AlertEnum.Instant:
+                        plCard.Subtitle = String.Format(WivaldyBotResources.AlertChangeInstant, myAlert.Interval.TotalSeconds, myAlert.Threshold);
+                        break;
+                    case AlertEnum.Total:
+                        plCard.Subtitle = String.Format(WivaldyBotResources.AlertChangeTotal, myAlert.Interval.TotalSeconds, myAlert.Threshold);
+                        break;
+                    case AlertEnum.Switch:
+                        plCard.Subtitle = String.Format(WivaldyBotResources.AlertChangeSwitch, myAlert.Interval.TotalSeconds);
+                        break;
+                    default:
+                        break;
+                }                
 
                 Attachment plAttachment = plCard.ToAttachment();
                 reply.Attachments.Add(plAttachment);
@@ -83,6 +93,7 @@ namespace WivaldyBot.Dialogs
             List<CardAction> cardButtons = new List<CardAction>();
             cardButtons.Add(new CardAction() { Title = WivaldyBotResources.AlertInstant, Value = WivaldyBotResources.AlertInstant, Type = "postBack" });
             cardButtons.Add(new CardAction() { Title = WivaldyBotResources.AlertTotal, Value = WivaldyBotResources.AlertTotal, Type = "postBack" });
+            cardButtons.Add(new CardAction() { Title = WivaldyBotResources.AlertSwitch, Value = WivaldyBotResources.AlertSwitch, Type = "postBack" });
             HeroCard plCard = new HeroCard()
             {
                 Buttons = cardButtons
@@ -97,10 +108,22 @@ namespace WivaldyBot.Dialogs
         public async Task MessageThreshold(IDialogContext context)
         {
             //ask for the threshold
-            if (myAlert.IsInstant)
-                await context.PostAsync(WivaldyBotResources.AlertThresholdWatts);
-            else
-                await context.PostAsync(WivaldyBotResources.AlertThresholdkWh);
+            switch (myAlert.AlertType)
+            {
+                case AlertEnum.Instant:
+                    await context.PostAsync(WivaldyBotResources.AlertThresholdWatts);
+                    break;
+                case AlertEnum.Total:
+                    await context.PostAsync(WivaldyBotResources.AlertThresholdkWh);
+                    break;
+                case AlertEnum.Switch:
+                    //Normally there is nothing to setup here, but code just in case for the future :)
+                    await context.PostAsync(WivaldyBotResources.AlertThresholdSwitch); //TODO
+                    break;
+                default:
+                    break;
+            }
+
             context.Wait(this.AskThreshold);
         }
 
@@ -211,13 +234,20 @@ namespace WivaldyBot.Dialogs
             //Need to check if it is a valid number
             if (message.Text == WivaldyBotResources.AlertInstant)
             {
-                myAlert.IsInstant = true;
+                myAlert.AlertType = AlertEnum.Instant;
+                await this.MessageThreshold(context);
+            }
+            else if (message.Text == WivaldyBotResources.AlertTotal)
+            {
+                myAlert.AlertType = AlertEnum.Total;
+                await this.MessageThreshold(context);
             }
             else
             {
-                myAlert.IsInstant = false;
+                myAlert.AlertType = AlertEnum.Switch;
+                context.Done(this.myAlert);
             }
-            await this.MessageThreshold(context);
+            
         }
         private async Task AskThreshold(IDialogContext context, IAwaitable<IMessageActivity> result)
         {

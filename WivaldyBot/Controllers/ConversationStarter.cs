@@ -25,11 +25,42 @@ namespace WivaldyBot.Controllers
                 var message = await GetMessageAsync(myPerson);
                 // TO DO send the right message to the User, take more params as entry
                 string res = "";
-                if (alert.IsInstant)
-                    res = "AlertExceedInstant";
-                else
-                    res = "AlertExceedTotal";
+                switch (alert.AlertType)
+                {
+                    case AlertEnum.Instant:
+                        res = "AlertExceedInstant";
+                        break;
+                    case AlertEnum.Total:
+                        res = "AlertExceedTotal";
+                        break;
+                    case AlertEnum.Switch:
+                        //should not happen!
+                        res = "AlertExceedSwitch";
+                        break;
+                    default:
+                        break;
+                }
+                
                 message.Text = string.Format(WivaldyBotResources.ResourceManager.GetString(res, myPerson.cultureInfo), consumption.ToString("N1", myPerson.cultureInfo), alert.Threshold.ToString("N1", myPerson.cultureInfo));
+                message.TextFormat = "markdown";
+                //message.Text = "Hello, this is a notification";
+                message.Locale = myPerson.cultureInfo.Name;
+                await connector.Conversations.SendToConversationAsync((Activity)message);
+            }
+        }
+
+        public static async Task ResumeCommand(string conversationId, string channelId, string consumption, Alert alert)
+        {
+            //find the good person in the list
+            MessageDetails myPerson = GetPerson(conversationId, channelId);
+            if (myPerson != null)
+            {
+                var connector = new ConnectorClient(new Uri(myPerson.serviceUrl));
+                var message = await GetMessageAsync(myPerson);
+                // TO DO send the right message to the User, take more params as entry
+                string res = "AlertExceedSwitch";        
+
+                message.Text = string.Format(WivaldyBotResources.ResourceManager.GetString(res, myPerson.cultureInfo), consumption);
                 message.TextFormat = "markdown";
                 //message.Text = "Hello, this is a notification";
                 message.Locale = myPerson.cultureInfo.Name;
