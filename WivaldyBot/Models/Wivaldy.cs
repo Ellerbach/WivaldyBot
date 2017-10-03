@@ -31,7 +31,7 @@ namespace WivaldyBot.Models
             try
             {
                 HttpClient cli = new HttpClient();
-                string urlrequest = $"https://app.wivaldy.com/api/v1/json/{Connection}/";
+                string urlrequest = $"https://app-recette.wivaldy.com/api/v1/json/{Connection}/";
                 //if both are null, then only last measure
                 if ((start == DateTimeOffset.MinValue) && (stop == DateTimeOffset.MinValue))
                     urlrequest += "last";
